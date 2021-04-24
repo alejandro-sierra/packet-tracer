@@ -1,0 +1,4 @@
+48c48
+< mysql:x:126:133:MySQL Server,,,:/nonexistent:/bin/false
+---
+> mysql:x:126:133::/nonexistent:/bin/false
