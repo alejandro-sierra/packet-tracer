@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #autor Alejandro Ballesta Sierras
 #Ejercicio01
@@ -36,6 +36,11 @@ entero $c
 echo ""
 done
 
+#autor Alejandro Ballesta Sierras
+# ejercicio01
+# Crea un script que muestre por pantalla el resultado de de las siguientes
+# operaciones. Debes tener en cuenta que a, b, c son variables enteras que son
+# preguntadas al usuario al iniciar el script.
 
 #Operacion 2 * b + 3 * (a-c)
 operacionA(){

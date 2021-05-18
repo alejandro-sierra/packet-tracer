@@ -1,7 +1,4 @@
-#!/bin/sh
-
-#autor Alejandro Ballesta Sierras
-#Ejercicio03
+#!/bin/bash
 
 #Función para saber si el valor introducido es un número
 entero() {
@@ -32,21 +29,41 @@ entero $numero
 echo ""
 done
 
-# UN NUMERO ES PRIMO SI ES DIVISIBLE SOLO ENTRE 1 Y SI MISMO
-#
-# 17 es primo, 17 % 1 = 0 y 17 % 17 = 1
-#
-# 27 no es primo, 27 % 3 = 0
 
-primo(){
-contador=2
-while [ $contador -lt $numero ]
-do
-  if [ $primo%$contador=0 ]; then
-    echo "El $numero NO es primo"
-  else
-    echo "El $numero SI es primo"
-  fi
-   contador=$(( contador+1 ))
-done
-}
+
+#autor Alejandro Ballesta Sierras
+#ejercicio03
+# Crea un script que pida un número e indique si se trata de un número par y si es
+# número primo.
+
+resultado=$((numero%2))
+if [ $numero = 1 ] #comprobacion del 1
+then
+  echo "el numero es impar"
+  echo "el numero no es primo"
+elif [ $numero = 2 ] #comprobacion del 2
+then
+  echo "el numero es par"
+  echo "el numero es primo"
+elif [ $resultado -eq 0 ]; #comprobamos que el numero es par o impar
+then 
+  echo "el numero es par"
+else
+  echo "el numero es impar"
+  for (( i=2 ; i<$numero ; i++ )); #recorremos el for empezando por el 2 y terminado por un antes del numero indicado
+  do
+    resultado=$((numero%$i))
+    if [ $resultado -eq 0 ]; #si el resultado es 0 sabemos que es primo
+    then  
+      echo "el numero no es primo"
+      break;
+    else 
+      fin=$(($numero-1))
+      if [ $i -eq $fin ];
+      then  
+       echo "el numero es primo"
+      fi
+    fi
+  done
+fi
+
