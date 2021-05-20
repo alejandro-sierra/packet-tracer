@@ -8,10 +8,10 @@
 
 ramdom=`shuf -i 0-1 -n 1`
 # 1 = cara
-# 0 = cruz
+# 0 = cruz (lo pierde todo)
 
-read -p "Cantidad a apostar: " numero
-if [ $ramdom -eq 1 ];
+read -p "Cantidad a apostar: " numero #cantidad a apostar
+if [ $ramdom -eq 1 ]; # si el numero ramdom es igual a 1 seguimos
 then
     let "resultado=numero*2"
     echo "Cantidad ganada $resultado!"

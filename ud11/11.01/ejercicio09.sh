@@ -7,16 +7,30 @@
 # programa debe sacar por pantalla el número de jugadas y el total ganado por
 # el jugador.
 
-ramdom=`shuf -i 0-1 -n 1`
 # 1 = cara
-# 0 = cruz
+# 0 = cruz (lo pierde todo)
 
+i=1
 
-read -p "Cantidad a apostar: " numero
-if [ $ramdom -eq 1 ];
-then
-    let "resultado=numero*2"
-    echo "Cantidad ganada $resultado!"
-else
-    echo "Nada! Lo pierdes todo!"
-fi
+read -p "Cantidad a apostar: " numero #cantidad a postar
+for ((;;));
+do
+    ramdom=`shuf -i 0-1 -n 1`
+
+    if [ $ramdom -eq 1 ]; #si el numero ramdom es 1 seguimos jugando
+    then
+        let "numero=numero*2" #doblamos la cantidad
+        echo "Numero de jugadas $i"
+        echo "Cantidad ganada $numero!"
+    else
+        echo "Nada! Lo pierdes todo!"
+        break
+    fi
+    echo ""
+    read -p "Quieres abandonar? (x/n): " salir #al introducir x salimos del bucle
+    if [ $salir = "x" ];
+    then
+        break
+    fi
+    i=$((i+1)) #i es igual al numero de partidas jugadas
+done
