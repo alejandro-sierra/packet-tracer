@@ -14,3 +14,34 @@
 # ejecución del programa (si falta algún parámetro se le indicará al usuario
 # y no se le dejará continuar hasta que lo introduzca).
 
+if [ $# -ne 3 ];
+then 
+    echo "Parametro 1: fichero a ordenar"
+    echo "Parametro 2: orden ASC (ascendente) o DES (descendete)"
+    echo "Parametro 3: fichero nuevo donde guardar el resultado"
+    echo ""
+    exit
+fi
+
+#Comprobamos que el fichero ($1) existe
+fichero=$(find / -name $1  2>null)
+if [ -z "$fichero" ]
+then 
+echo "No existe el fichero, pon uno valido"
+exit
+fi
+
+#Comprobamos que el orden ($2) es correcto
+case $2 in
+    ASC)
+    echo "Fichero ordenado ascendentemente"
+    sort $fichero > $3
+    ;;
+    DES)
+    echo "Fichero ordenado descendentemente"
+    sort -r $fichero > $3
+    ;;
+    *)
+        echo "Parametro 2 invalido"
+    ;;
+esac

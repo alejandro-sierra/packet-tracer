@@ -17,7 +17,7 @@ else
     echo "Es un directorio"
     echo ""
         ls -l $resultado
-    else
+    else #entonces sera un fichero
     echo "Es un fichero"
     echo ""
         cat $resultado

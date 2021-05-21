@@ -8,6 +8,12 @@
 # parámetros, si es así dará un error. También deberá preguntar si está seguro
 # de llevar a cabo la acción.
 
+if [ $# -lt 1 ] || [ $# -gt 9 ];
+then
+    echo "Numero de parametros introducido erroneo"
+    exit
+fi
+
 for i in $*
 do
     resultado=$(find / -name $i  2>null)
@@ -17,5 +23,5 @@ do
     echo "No existe el fichero"
     else
     rm -ri $resultado
-    fi
+    fi  
 done
