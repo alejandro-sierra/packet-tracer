@@ -10,7 +10,7 @@
 
 if [ $# -ne 2 ]; #Comprobamos que son han pasado 2 parametros
 then 
-    echo "Parametro 1: orden de la traduccion (ING/ESP/CAT/EUSK)"
+    echo "Parametro 1: orden de la traduccion (ING/ESP/CAT/EUSK/BUL)"
     echo "Parametro 2: palabra a traducir"
     echo ""
     exit
@@ -30,8 +30,11 @@ case $1 in
     EUSK)
     grep -i $2 ./diccionario.txt | cut -d: -f4
     ;;
+    BUL)
+    grep -i $2 ./diccionario.txt | cut -d: -f5
+    ;;
     *)
-        echo "Parametro 1 incorrecto, solo podemos traducir a español(ESP), inglés(ING), catalan(CAT) y euskera(EUSK)."
+        echo "Parametro 1 incorrecto, solo podemos traducir a español(ESP), inglés(ING), catalan(CAT), euskera(EUSK) y bulgaro(BUL)."
     ;;
 esac
 
@@ -44,5 +47,6 @@ then
     read -p "Añade la palabra (ING): " ing
     read -p "Añade la palabra (CAT): " cat
     read -p "Añade la palabra (EUSK): " eusk
-    echo $esp":"$ing":"$cat":"$eusk":" >> ./diccionario.txt
+    read -p "Añade la palabra (BUL): " bul
+    echo $esp":"$ing":"$cat":"$eusk":"$bul":" >> ./diccionario.txt
 fi
