@@ -28,12 +28,12 @@ then
 fi
 
 #Comprobamos que el fichero existe
-# existe=$(find / -name $1 2>null)
-# if [ -z $existe ];
-# then
-#     echo "El fichero no existe, prueba con otro"
-#     exit
-# if
+existe=$(find / -name $1 2>null)
+if [ -z $existe ];
+then
+    echo "El fichero no existe, prueba con otro"
+    exit
+if
 
 #Creamos los grupos
 grupo=$(cat $1 | cut -d',' -f4)
@@ -42,10 +42,3 @@ do
     sudo groupadd $i 2>null;
     echo "Grupo $i creado correctamente"
 done
-
-# grupo=$(cat $1 | cut -d',' -f4)
-# for i in $grupo;
-# do
-#     sudo groupadd $i 2>null
-#     echo " Grupo añadido $i"
-# done

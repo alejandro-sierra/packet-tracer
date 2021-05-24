@@ -11,17 +11,42 @@
 # comando killall para esta tarea.
 # NOTA: usa los comandos ps, killall o top.
 
-for ((;;));
-do
-        echo ""
-        echo "*****MENU*****"
-        echo "1) Mostrar procesos del sistema"
-        echo "2) Matar un proceso"
-        echo "3) Salir"
-        read -p "Elige una opcion: " opcion
+#Comprobamos que se haya pasado un elemento por parametro, si no se sale del script
+if [ $# -ne 1 ];
+then
+    echo "Debes introducir un parametro"
+else
+    for ((;;));
+    do
+       until [ $opcion -eq 3 ]; #Solo salbremos el bucle si al opcion es igual a 3
+           do
+           echo ""
+           echo "*****MENU DE PROCESOS*****"
+           echo "1) Mostrar procesos del sistema"
+           echo "2) Matar un proceso"
+           echo "3) Salir"
+           read -p "Elige una opcion: " opcion
 
-        if [ $opcion -eq 3 ];
-        then
-            break
-        fi
-done
+           case $opcion in
+           1) #Mostramos todos los procesos con el mayor detalle
+           echo "Para salir pulsa la 'Q'"
+           top
+           break
+           ;;
+            2) #Borramos el proceso pasado por parametro
+            read -p "Estas seguro de que quieres elimiar este proceso? (s/n): " seguro
+            if [ seguro="s" ];
+            then
+            killall $1
+            echo "El proceso $1 ha sido eliminado"
+            else
+                break
+            fi
+            ;;
+           3) #Con el 3 salimos del programa
+           exit
+           ;;
+           esac
+       done
+    done
+fi
