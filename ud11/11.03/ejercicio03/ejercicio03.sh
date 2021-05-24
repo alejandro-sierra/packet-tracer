@@ -11,3 +11,17 @@
 # comando killall para esta tarea.
 # NOTA: usa los comandos ps, killall o top.
 
+for ((;;));
+do
+        echo ""
+        echo "*****MENU*****"
+        echo "1) Mostrar procesos del sistema"
+        echo "2) Matar un proceso"
+        echo "3) Salir"
+        read -p "Elige una opcion: " opcion
+
+        if [ $opcion -eq 3 ];
+        then
+            break
+        fi
+done
