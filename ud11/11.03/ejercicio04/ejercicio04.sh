@@ -20,18 +20,19 @@
 # f)
 # salir. Sale del programa.
 
+#Comprobamos que existe el directorio
+if [ -d ~/recycled ];
+then
+    echo "El directorio de respaldo existe"
+else #si no existe la lista la crea
+    mkdir ~/recycled
+fi
 
 for ((;;));
 do
     until [ $opcion -eq 6 ]; #Solo salbremos el bucle si al opcion es igual a 6
     do
-    #Comprobamos que existe el directorio
-    if [ -d ~/recycled ];
-    then
-        echo "El directorio de respaldo existe"
-    else #si no existe la lista la crea
-        mkdir ~/recycled
-    fi
+
 
         echo ""
         echo "*****PAPELERA DE RECICLAJE HIGHCOST*****"
@@ -44,16 +45,17 @@ do
         read -p "Elige una opcion: " opcion
 
         case $opcion in
-        1) #Nombre del archivo a elimiar
+        1) #Nombre del archivo a eliminar
         read -p "Nombre del archivo a eliminar: " eliminar
         buscarFichero=$(find / -name $eliminar 2>null)
         if [ -z $buscarFichero ];
         then
             echo "Fichero no existe"
         else
+            echo "El $eliminar a sido reciclado con exito"
             sudo mv $buscarFichero ~/recycled
             echo $eliminar":"$buscarFichero >> respaldo.txt #Grabamos en el fichero la copia de respaldo
-            echo "Fichero $elimiar a sido reciclado con exito"
+            
         fi
             break
         ;;
@@ -62,13 +64,34 @@ do
         buscarRestauracion=$(grep -i $restaurar ./respaldo.txt | cut -d: -f2)
         sudo mv ~/recycled/$restaurar $buscarRestauracion
         echo "El fichero ~/recycled/$restaurar a sido restaurado a $buscarRestauracion"
+        sed -i /$restaurar/d ./respaldo.txt #borrado del registro en respaldo
             break
         ;;
         3) #Restuarar toda la papelera
+        listaFichero=$(grep -i ./respaldo.txt | cut -d: -f1)
+        restaurarTodo=$(grep -i ./respaldo.txt | cut -d: -f2)
+        for i in $listaFichero;
+        do
+            for j in $restaurarTodo;
+            do
+            sudo mv ~/recycled/$i $j
+            done
+        done
+        echo "Todo restaurado"
+            break
+        ;;
+        4) #Vaciar la papelera
+        rm -r ~/recycled/*
+        rm -r ./respaldo.txt
+        touch ./respaldo.txt
+            break
+        ;;        
+        5) #Mostar el contenido de la papelera
+        ls -l ~/recycled
             break
         ;;
         6) #Con el 3 salimos del programa
-        exit
+            exit
         ;;
         esac
     done

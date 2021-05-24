@@ -1,2 +1,0 @@
-fichero.txt:/home/alejandro/Escritorio/sin/ud11/11.03/ejercicio02/fichero.txt
-fichero1.txt:/home/alejandro/Escritorio/datos_pruebas/fichero1.txt
