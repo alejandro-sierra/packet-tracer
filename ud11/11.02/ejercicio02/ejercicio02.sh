@@ -18,7 +18,7 @@ for i in $*
 do
     resultado=$(find / -name $i  2>null)
 
-    if [ -z "$resultado" ]
+    if [ -z "$resultado" ];
     then 
     echo "No existe el fichero"
     else

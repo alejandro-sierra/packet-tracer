@@ -1,0 +1,61 @@
+********** INFORMACION RELEVANTE DE LA RED **********
+Red de tipo: C  Nombre de la red: 192.168.0.26   Broadcast: 192.168.0.255  Mascara: 255.255.255.0
+ 
+192.168.0.1: No Disponible
+192.168.0.2: Disponible
+192.168.0.3: Disponible
+192.168.0.4: Disponible
+192.168.0.5: Disponible
+192.168.0.6: Disponible
+192.168.0.7: Disponible
+192.168.0.8: Disponible
+192.168.0.9: Disponible
+192.168.0.10: Disponible
+192.168.0.11: No Disponible
+192.168.0.12: Disponible
+192.168.0.13: No Disponible
+192.168.0.14: No Disponible
+192.168.0.15: No Disponible
+192.168.0.16: Disponible
+192.168.0.17: No Disponible
+192.168.0.18: Disponible
+192.168.0.19: No Disponible
+192.168.0.20: Disponible
+192.168.0.21: Disponible
+192.168.0.22: Disponible
+192.168.0.23: No Disponible
+192.168.0.24: No Disponible
+192.168.0.25: Disponible
+192.168.0.26: No Disponible
+192.168.0.27: Disponible
+192.168.0.28: Disponible
+192.168.0.29: Disponible
+192.168.0.30: Disponible
+192.168.0.31: Disponible
+192.168.0.32: Disponible
+192.168.0.33: Disponible
+192.168.0.34: Disponible
+192.168.0.35: Disponible
+192.168.0.36: Disponible
+192.168.0.37: Disponible
+192.168.0.38: Disponible
+192.168.0.39: Disponible
+192.168.0.40: Disponible
+192.168.0.41: Disponible
+192.168.0.42: Disponible
+192.168.0.43: Disponible
+192.168.0.44: Disponible
+192.168.0.45: Disponible
+192.168.0.46: Disponible
+192.168.0.47: Disponible
+192.168.0.48: Disponible
+192.168.0.49: Disponible
+192.168.0.50: Disponible
+192.168.0.51: Disponible
+192.168.0.52: Disponible
+192.168.0.53: Disponible
+192.168.0.54: Disponible
+192.168.0.55: Disponible
+192.168.0.56: Disponible
+192.168.0.57: Disponible
+192.168.0.58: Disponible
