@@ -44,6 +44,10 @@ do
     fi
 done
 
+#Tipo A: 8
+#Tipo B: 16
+#Tipo C: 24
+
 # Averiguamos de que tipo es la ip
 tipo=$(hostname -I | cut -d. -f1)
 if [ $tipo -ge 0 ] && [ $tipo -le 127 ];
@@ -73,8 +77,7 @@ echo "Escribiendo la lista, esto puede tardar unos minutos. Perdón por las mole
 host=$(hostname -I | cut -d'.' -f1,2,3)
 for ((i=1;i<=254;i++));
 do
-    #La cortar las filas reduzco el tiempo de espera al no tener que almacenar esta informacion en la variable
-    conexion=$(ping -c5 $host"."$i | grep -i 64 | cut -d" " -f1)
+    conexion=$(ping -c5 $host"."$i | grep "ttl=64")
     if [[ -z $conexion ]];
     then
         echo "$host"."$i: Disponible" >> $busquedaUbicacion"/"$nombre
