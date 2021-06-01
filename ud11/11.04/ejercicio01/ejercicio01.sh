@@ -85,3 +85,25 @@ do
         echo "$host"."$i: No Disponible" >> $busquedaUbicacion"/"$nombre
     fi
 done
+
+
+
+# TIPO B
+# 172.23.0.0
+# host=$(hostname -I | cut -d'.' -f1,2,)
+# for ((i=1;i<=255;i++));
+# do
+#     for ((j=1;j<=$i;j++));
+#     do
+#     conexion=$(ping -c5 $host"."$i"."$j | grep "ttl=64")
+#     if [[ -z $conexion ]];
+#     then
+#         echo "$host"."$i: Disponible" >> $busquedaUbicacion"/"$nombre
+#     else
+#         echo "$host"."$i: No Disponible" >> $busquedaUbicacion"/"$nombre
+#     fi
+#     done
+# done
+
+
+
