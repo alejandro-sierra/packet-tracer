@@ -20,26 +20,61 @@
 # NOTA: Deberás usar el comando crontab así como los ficheros involucrados con él.
 # **********************************************************************************
 
+permisos(){
+    if [ $# -ne 1 ];
+    then
+        usuarioactual
+    else
+        usuario pasado
+    fi
+}
+
+anyadir(){
+    echo "minuto (0-59)
+          |     hora (0-23)
+          |     |       dia del mes (1-31)
+          |     |       |       mes (1-12)
+          |     |       |       |       dia de la semana (0-6 donde 0=Domingo)
+          |     |       |       |       |       comandos
+          |     |       |       |       |       |
+
+          *     *       *       *       *       date > ~/fecha.txt"
+
+    echo ""
+    read -p "Minuto: " minuto
+    read -p "Hora: " hora
+    read -p "Dia del mes: " diaMes
+    read -p "Mes: " mes
+    read -p "Dia de la semana: " diaSemana
+    read -p "Comando: " comando
+
+    echo "$minuto" "$hora" "$diaMes" "$mes" "$diaSemana" "$comando" >> crontab_pruebas.txt
+}
+
 salir=0
 while [ $salir -eq 0 ];
 do
     echo ""
-    echo "*****INFORME DE IP LIBRES*****"
-    echo "a)"
-    echo "b)"
-    echo "c)"
+    echo "***** GESTION DEL CRONTAB *****"
+    echo "a) Listado de todas las tareas"
+    echo "b) Comprobar que el usuario tiene provilegios"
+    echo "c) Añadir tareas"
+    echo "d) Eliminar tareas"
     echo "q) Salir"
     read -p "Elige una opcion: " opcion
 
     case $opcion in
         a)
-            echo "Eleccion A"
+            crontab -l 
         ;;
         b)
-            echo "Eleccion B"
+            permisos
         ;;
         c)
-            echo "Eleccion C"
+            anyadir
+        ;;
+        d)
+            #crontab -u usuario -ir
         ;;
         q)
             salir=1

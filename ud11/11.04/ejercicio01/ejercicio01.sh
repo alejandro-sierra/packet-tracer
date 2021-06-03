@@ -18,92 +18,108 @@
 # se encuentra en una única red. Sólo posee una tarjeta de red.
 # ************************************************************************************
 
+#Comprobamos que nos pasan parametros
+if [ $# -eq 2 ]; 
+then
+    nombre=$1
+    ubicacion=$2
+#Sino nos pasan parametros los pediremos
+else
+    echo "***** INFORMACION DEL INFOMRE *****"
+    read -p "Cual sera el nombre del informe: " nombre
+    read -p "Y cual sera la ubicación del mismo: " ubicacion
+fi
+
 correcto=0
 while [ $correcto -eq 0 ];
 do
-    #Comprobamos que nos pasan parametros
-    if [ $# -gt 0 ] && [ $# -lt 3 ]; 
-    then
-        nombre=$1
-        ubicacion=$2
-    #Sino nos pasan parametros los pediremos
-    else
-        echo "***** INFORMACION DEL INFOMRE *****"
-        read -p "Cual sera el nombre del informe: " nombre
-        read -p "Y cual sera la ubicación del mismo: " ubicacion
-    fi
-
-    #Comprobamos que la ubicacion exite y si es una carpeta (para que pueda almacenar los informes)
+    #Comprobamos que la ubicacion exite y si es una carpeta, si no lo es nos volvera a perdir la ubicacion.
     busquedaUbicacion=$(find / -name $ubicacion  2>null)
     if [ -z "$busquedaUbicacion" ] || [ -f "$busquedaUbicacion" ];
     then
         echo "No es un direcctorio o no existe"
-        exit
+        read -p "Escribe una ubicacion valida: " ubicacion
+        correcto=0
     else
         correcto=1
     fi
 done
 
-#Tipo A: 8
-#Tipo B: 16
-#Tipo C: 24
-
-# Averiguamos de que tipo es la ip
-tipo=$(hostname -I | cut -d. -f1)
-if [ $tipo -ge 0 ] && [ $tipo -le 127 ];
-then
-    resultado="Red de tipo: A" 
-elif [ $tipo -ge 128 ] && [ $tipo -le 191 ];
-then
-    resultado="Red de tipo: B"
-elif [ $tipo -ge 192 ] && [ $tipo -le 223 ];
-then
-    resultado="Red de tipo: C"
-else
-    resultado="La ip del equipo no esta dentro del rango permitido"
-fi
 
 #Escribimos el principio del fichero a crear
-nombreRed=$(hostname -I)
-broadcast=$(ifconfig | grep $nombreRed | tr -s ' ' ';' | cut -d';' -f7)
-mascara=$(ifconfig | grep $nombreRed | tr -s ' ' ';' | cut -d';' -f5)
+nombreRed=$(ip addr | grep global | tr -s ' ' '/' | cut -d'/' -f3)
+#Como no podemos sacas el nombre de la red, he puesto la ip del equipo desde el que se ejecuta
+mascara=$(ip addr | grep global | tr -s ' ' '/' | cut -d'/' -f4)
+broadcast=$(ip addr | grep global | tr -s ' ' '/' | cut -d'/' -f6)
+
+
+if [ $mascara -eq 8 ];
+then
+    masc=255.0.0.0
+    tipo="A"
+elif [ $mascara -eq 16 ]
+then    
+    masc=255.255.0.0
+    tipo="B"
+elif [ $mascara -eq 24 ]
+then    
+    masc=255.255.255.0
+    tipo="C"
+fi
 
 echo "********** INFORMACION RELEVANTE DE LA RED **********" >> $busquedaUbicacion"/"$nombre
-echo "$resultado  Nombre de la red: $nombreRed  Broadcast: $broadcast  Mascara: $mascara" >> $busquedaUbicacion"/"$nombre
+echo "Tipo: $tipo  IP: $nombreRed  Broadcast: $broadcast  Mascara: $masc" >> $busquedaUbicacion"/"$nombre
 echo " " >> $busquedaUbicacion"/"$nombre
 
-#Y aqui escribimos cada ip en una linea, diciendo si esta disponible o no
+
 echo "Escribiendo la lista, esto puede tardar unos minutos. Perdón por las molestias."
-host=$(hostname -I | cut -d'.' -f1,2,3)
-for ((i=1;i<=254;i++));
-do
-    conexion=$(ping -c5 $host"."$i | grep "ttl=64")
-    if [[ -z $conexion ]];
-    then
-        echo "$host"."$i: Disponible" >> $busquedaUbicacion"/"$nombre
-    else
-        echo "$host"."$i: No Disponible" >> $busquedaUbicacion"/"$nombre
-    fi
-done
-
-
-
-# TIPO B
-# 172.23.0.0
-# host=$(hostname -I | cut -d'.' -f1,2,)
-# for ((i=1;i<=255;i++));
-# do
-#     for ((j=1;j<=$i;j++));
-#     do
-#     conexion=$(ping -c5 $host"."$i"."$j | grep "ttl=64")
-#     if [[ -z $conexion ]];
-#     then
-#         echo "$host"."$i: Disponible" >> $busquedaUbicacion"/"$nombre
-#     else
-#         echo "$host"."$i: No Disponible" >> $busquedaUbicacion"/"$nombre
-#     fi
-#     done
-# done
-
-
-
+case $mascara in
+    8) #tipoA
+    ipA=$(ip addr | grep global | tr -s ' ' '/' | cut -d'/' -f3 | cut -d'.' -f1)
+    for ((i=1;i<=255;i++));
+    do
+        for ((j=1;j<=255;j++));
+        do
+            for ((k=1;k<=254;k++));
+            do
+                conexion=$(ping -c5 $ipA"."$i"."$j"."$k | grep "ttl=64")
+                if [[ -z $conexion ]];
+                then
+                    echo "$ipA"."$i"."$j"."$k: Disponible" >> $busquedaUbicacion"/"$nombre
+                else
+                    echo "$ipA"."$i"."$j"."$k: No Disponible" >> $busquedaUbicacion"/"$nombre
+                fi
+            done
+        done
+    done
+    ;;
+    16) #tipoB
+        ipB=$(ip addr | grep global | tr -s ' ' '/' | cut -d'/' -f3 | cut -d'.' -f1,2)
+    for ((i=1;i<=255;i++));
+    do
+        for ((j=1;j<=254;j++));
+        do
+            conexion=$(ping -c5 $ipB"."$i"."$j | grep "ttl=64")
+            if [[ -z $conexion ]];
+            then
+                echo "$ipB"."$i"."$j: Disponible" >> $busquedaUbicacion"/"$nombre
+            else
+                echo "$ipB"."$i"."$j: No Disponible" >> $busquedaUbicacion"/"$nombre
+            fi
+        done
+    done
+    ;;
+    24) #tipoC
+    ipC=$(ip addr | grep global | tr -s ' ' '/' | cut -d'/' -f3 | cut -d'.' -f1,2,3)
+    for ((i=1;i<=254;i++));
+    do
+        conexion=$(ping -c5 $ipC"."$i | grep "ttl=64")
+        if [[ -z $conexion ]];
+        then
+            echo "$ipC"."$i: Disponible" >> $busquedaUbicacion"/"$nombre
+        else
+            echo "$ipC"."$i: No Disponible" >> $busquedaUbicacion"/"$nombre
+        fi
+    done
+    ;;
+esac
