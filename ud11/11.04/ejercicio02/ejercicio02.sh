@@ -21,12 +21,14 @@
 # **********************************************************************************
 
 permisos(){
-    if [ $# -ne 1 ];
-    then
-        usuarioactual
-    else
-        usuario pasado
-    fi
+read -p "Introduce el nombre del usuario" usuario
+permiso=$(sudo cat /etc/group | grep crontab | grep $usuario)
+if [ -z permiso ];
+then
+    echo "El usuario no tiene permisos para utilizar el crontab"
+else
+    echo "El usuario si tiene permisos"
+fi
 }
 
 anyadir(){
@@ -48,7 +50,7 @@ anyadir(){
     read -p "Dia de la semana: " diaSemana
     read -p "Comando: " comando
 
-    echo "$minuto" "$hora" "$diaMes" "$mes" "$diaSemana" "$comando" >> crontab_pruebas.txt
+    echo "$minuto" "$hora" "$diaMes" "$mes" "$diaSemana" "$comando" >> /var/spool/cron/crontabs/$USER
 }
 
 salir=0
@@ -65,7 +67,7 @@ do
 
     case $opcion in
         a)
-            crontab -l 
+            sudo cat /var/spool/cron/crontabs/$USER 
         ;;
         b)
             permisos
@@ -74,7 +76,10 @@ do
             anyadir
         ;;
         d)
-            #crontab -u usuario -ir
+        read -p ""
+        eliminar=$()
+        #sed -i /$restaurar/d ./respaldo.txt #borrado del registro en respaldo
+
         ;;
         q)
             salir=1
